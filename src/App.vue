@@ -1,6 +1,6 @@
 <template>
   <n-config-provider
-    class="wh-full"
+    class="w-full h-full"
     :locale="zhCN"
     :date-locale="dateZhCN"
   >

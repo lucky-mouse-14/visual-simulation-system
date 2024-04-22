@@ -1,9 +1,9 @@
 <template>
-  <di class="w-full h-full">
-    <Panel />
-  </di>
+  <div class="w-full h-full">
+    <GraphPanel />
+  </div>
 </template>
 
 <script setup>
-import Panel from './container/panel.vue'
+import GraphPanel from './container/graph-panel.vue'
 </script>
