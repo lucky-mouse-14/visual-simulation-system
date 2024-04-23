@@ -6,7 +6,8 @@ export function setupMessage(NMessage) {
     static instance
     constructor() {
       // 单利模式
-      if (Message.instance) return Message.instance
+      if (Message.instance)
+        return Message.instance
       Message.instance = this
       this.message = {}
       this.removeTimer = {}
@@ -26,25 +27,24 @@ export function setupMessage(NMessage) {
     }
 
     showMessage(type, content, option = {}) {
-      if (Array.isArray(content)) {
+      if (Array.isArray(content))
         return content.forEach(msg => NMessage[type](msg, option))
-      }
 
-      if (!option.key) {
+      if (!option.key)
         return NMessage[type](content, option)
-      }
 
       const currentMessage = this.message[option.key]
       if (currentMessage) {
         currentMessage.type = type
         currentMessage.content = content
-      } else {
+      }
+      else {
         this.message[option.key] = NMessage[type](content, {
           ...option,
           duration: 0,
           onAfterLeave: () => {
             delete this.message[option.key]
-          }
+          },
         })
       }
 
@@ -91,7 +91,6 @@ export function setupDialog(NDialog) {
 
   return NDialog
 }
-
 
 export function setupNaiveDiscreteApi() {
   const { message, dialog, notification, loadingBar } = NaiveUI.createDiscreteApi(

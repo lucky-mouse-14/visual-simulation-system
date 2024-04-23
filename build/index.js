@@ -1,5 +1,5 @@
+import path from 'node:path'
 import { globSync } from 'glob'
-import path from 'path'
 
 /**
  * @usage 生成icons，用于 unocss safelist，一直吃也难免动态渲染自定义图标
@@ -26,5 +26,5 @@ export function getIcons() {
  */
 export function getPagePathes() {
   const files = globSync('src/views/**/*.vue')
-  return files.map(item => '/' + path.normalize(item).replace(/\\/g, '/'))
+  return files.map(item => `/${path.normalize(item).replace(/\\/g, '/')}`)
 }

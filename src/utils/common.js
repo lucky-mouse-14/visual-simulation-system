@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 
 /**
  * @desc  格式化时间
- * @param {(Object|string|number)} time
+ * @param {(object | string | number)} time
  * @param {string} format
  * @returns {string | null}
  */
@@ -17,15 +17,15 @@ export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
 /**
  * @desc  函数节流
  * @param {Function} fn
- * @param {Number} wait
+ * @param {number} wait
  * @returns {Function}
  */
 export function throttle(fn, wait) {
-  var context, args
-  var previous = 0
+  let context, args
+  let previous = 0
 
   return function () {
-    var now = +new Date()
+    const now = +new Date()
     context = this
     args = arguments
     if (now - previous > wait) {
@@ -45,24 +45,24 @@ export function throttle(fn, wait) {
 export function debounce(method, wait, immediate) {
   let timeout
   return function (...args) {
-    let context = this
-    if (timeout) {
+    const context = this
+    if (timeout)
       clearTimeout(timeout)
-    }
+
     // 立即执行需要两个条件，一是immediate为true，二是timeout未被赋值或被置为null
     if (immediate) {
       /**
        * 如果定时器不存在，则立即执行，并设置一个定时器，wait毫秒后将定时器置为null
        * 这样确保立即执行后wait毫秒内不会被再次触发
        */
-      let callNow = !timeout
+      const callNow = !timeout
       timeout = setTimeout(() => {
         timeout = null
       }, wait)
-      if (callNow) {
+      if (callNow)
         method.apply(context, args)
-      }
-    } else {
+    }
+    else {
       // 如果immediate为false，则函数wait毫秒后执行
       timeout = setTimeout(() => {
         /**
@@ -81,7 +81,7 @@ export function debounce(method, wait, immediate) {
  * @returns
  */
 export function sleep(time) {
-  return new Promise((resolve) => setTimeout(resolve, time))
+  return new Promise(resolve => setTimeout(resolve, time))
 }
 
 /**

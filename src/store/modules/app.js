@@ -7,6 +7,6 @@ export const useAppStore = defineStore('app', {
   actions: {
     setAppLoading(b) {
       this.appLoading = b
-    }
-  }
+    },
+  },
 })

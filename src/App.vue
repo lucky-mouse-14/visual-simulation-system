@@ -1,3 +1,7 @@
+<script setup>
+import { dateZhCN, zhCN } from 'naive-ui'
+</script>
+
 <template>
   <n-config-provider
     class="w-full h-full"
@@ -9,7 +13,3 @@
     </router-view>
   </n-config-provider>
 </template>
-
-<script setup>
-import { zhCN, dateZhCN } from 'naive-ui'
-</script>

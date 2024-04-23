@@ -20,7 +20,7 @@ export const basicRoutes = [
     path: '/design',
     component: () => import('@/views/design/index.vue'),
     meta: {
-      title: '系统设计'
+      title: '系统设计',
     },
   },
 ]

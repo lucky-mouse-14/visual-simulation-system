@@ -1,17 +1,9 @@
-<template>
-  <div class="flex flex-col justify-center items-stretch">
-    <div class="toolbox-btn" @click="handleZoomIn">画布放大</div>
-    <div class="toolbox-btn" @click="handleZoomOut">画布缩小</div>
-    <div class="toolbox-btn" @click="handleCenterContent">居中显示</div>
-  </div>
-</template>
-
 <script setup>
 defineOptions({
-  name: 'GraphPanelToolbox'
+  name: 'GraphPanelToolbox',
 })
 
-const emits = defineEmits(['zoomIn', 'zoomOut', 'centerContent'])
+const emits = defineEmits(['zoomIn', 'zoomOut', 'centerContent', 'save', 'clear'])
 
 function handleZoomIn() {
   emits('zoomIn')
@@ -21,10 +13,38 @@ function handleZoomOut() {
   emits('zoomOut')
 }
 
-function handleXCenterContent() {
+function handleCenterContent() {
   emits('centerContent')
 }
+
+function handleSave() {
+  emits('save')
+}
+
+function handleClear() {
+  emits('clear')
+}
 </script>
+
+<template>
+  <div class="flex flex-col justify-center items-stretch">
+    <div class="toolbox-btn" @click="handleZoomIn">
+      画布放大
+    </div>
+    <div class="toolbox-btn" @click="handleZoomOut">
+      画布缩小
+    </div>
+    <div class="toolbox-btn" @click="handleCenterContent">
+      居中显示
+    </div>
+    <div class="toolbox-btn" @click="handleSave">
+      保存
+    </div>
+    <div class="toolbox-btn" @click="handleClear">
+      清空
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .toolbox-btn {

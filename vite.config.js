@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
@@ -7,14 +7,13 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import simpleHtmlPlugin from 'vite-plugin-simple-html'
 import removeNoMatch from 'vite-plugin-router-warn'
-import { pluginPagePathes, pluginIcons } from './build/plugin-isme'
-
+import { pluginIcons, pluginPagePathes } from './build/plugin-isme'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const isBuild = command === 'build'
   const viteEnv = loadEnv(mode, process.cwd())
-  const { VITE_TITLE, VITE_PUBLIC_PATH, VITE_PROXY_TARGER } = viteEnv
+  const { VITE_TITLE, VITE_PUBLIC_PATH } = viteEnv
 
   return {
     base: VITE_PUBLIC_PATH || '/',
@@ -27,15 +26,15 @@ export default defineConfig(({ command, mode }) => {
       }),
       Components({
         resolvers: [NaiveUiResolver()],
-        dts: false
+        dts: false,
       }),
       simpleHtmlPlugin({
         minify: isBuild,
         inject: {
           data: {
             title: VITE_TITLE,
-          }
-        }
+          },
+        },
       }),
       // 自定义插件，用于生成页面文件的path，并添加到虚拟模块
       pluginPagePathes(),
