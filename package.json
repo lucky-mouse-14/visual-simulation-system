@@ -13,6 +13,7 @@
   "dependencies": {
     "@antv/x6": "^2.18.1",
     "@antv/x6-plugin-dnd": "^2.1.1",
+    "@antv/x6-plugin-transform": "^2.1.8",
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "konva": "^9.3.6",

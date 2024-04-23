@@ -5,6 +5,7 @@ defineOptions({
 
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
+import { Transform } from '@antv/x6-plugin-transform'
 import GraphPanelToolbox from "../components/graph-panel-toolbox.vue";
 import emitter from "@/utils/eventBus";
 import { useGraphStore } from '@/store'
@@ -26,6 +27,7 @@ onMounted(() => {
   _graphContainerWidth = elGraphPanel._graphContainerWidth;
   _graphContainerHeight = elGraphPanel._graphContainerHeight;
   initGraph();
+  initTransform();
   initDnd();
   initMetadata()
 });
@@ -34,6 +36,11 @@ onUnmounted(() => {
   emitter.off("on-drag-start", (data) => {
     onDragStart(data);
   });
+
+  if (_graph) {
+    _graph.dispose()
+    _graph = null
+  }
 });
 
 function initGraph() {
@@ -71,6 +78,32 @@ function initDnd() {
   _dnd = new Dnd({
     target: _graph,
   });
+}
+
+function initTransform() {
+  _graph.use(new Transform({
+    resizing: {
+      enabled: true,
+      // minWidth: 50,
+      // minHeihgt: 50,
+      orthogonal: false,
+      restrict: false,
+      preserveAspectRatio: true,
+      allowReverse: false,
+      minWidth(node) {
+        const { width } = node.getData()
+        return width
+      },
+      minHeight(node) {
+        const { height } = node.getData()
+        return height
+      },
+    },
+    rotating: {
+      enabled:true,
+      grid: 10,
+    }
+  }))
 }
 
 function initMetadata() {
@@ -115,8 +148,8 @@ function handleClear() {
 function onDragStart({ mouseEvent, nodeData }) {
   const node = _graph.createNode({
     shape: "image",
-    width: 100,
-    height: 100,
+    width: nodeData.width,
+    height: nodeData.height,
     // label: nodeData.name,
     imageUrl: nodeData.icon,
     tools: [
