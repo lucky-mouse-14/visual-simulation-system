@@ -28,36 +28,11 @@ function handleClear() {
 
 <template>
   <div class="flex flex-col justify-center items-stretch">
-    <div class="toolbox-btn" @click="handleZoomIn">
-      画布放大
-    </div>
-    <div class="toolbox-btn" @click="handleZoomOut">
-      画布缩小
-    </div>
-    <div class="toolbox-btn" @click="handleCenterContent">
-      居中显示
-    </div>
-    <div class="toolbox-btn" @click="handleSave">
-      保存
-    </div>
-    <div class="toolbox-btn" @click="handleClear">
-      清空
-    </div>
+    <n-button type="primary" @click="handleZoomIn"><svg-icon icon="zoom-in" class="mr-4px" />画布放大</n-button>
+    <n-button class="mt-4px" type="primary" @click="handleZoomOut"><svg-icon icon="zoom-out" class="mr-4px" /> 画布缩小</n-button>
+    <n-button class="mt-4px" type="primary" @click="handleCenterContent"><svg-icon icon="focus-center" class="mr-4px" /> 居中显示</n-button>
+    <n-button class="mt-4px" type="primary" @click="handleSave"><svg-icon icon="save" class="mr-4px" /> 保存</n-button>
+    <n-button class="mt-4px" type="primary" @click="handleClear"><svg-icon icon="clear" class="mr-4px" /> 清空</n-button>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.toolbox-btn {
-  padding: 6px 12px;
-  background-color: #fff;
-  color: #666;
-  border: 1px solid #666;
-  border-radius: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-top: 4px;
-  &:first-child {
-    margin-top: 0;
-  }
-}
-</style>

@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash-es'
 export const useGraphStore = defineStore('graph', {
   state: () => ({
     cellsMetadata: [],
+    currentNode: null,
   }),
   actions: {
     saveCellsMetadata(arr) {

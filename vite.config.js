@@ -7,7 +7,9 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import simpleHtmlPlugin from 'vite-plugin-simple-html'
 import removeNoMatch from 'vite-plugin-router-warn'
-import { pluginIcons, pluginPagePathes } from './build/plugin-isme'
+import { pluginPagePathes } from './build/plugin-isme'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -38,10 +40,15 @@ export default defineConfig(({ command, mode }) => {
       }),
       // 自定义插件，用于生成页面文件的path，并添加到虚拟模块
       pluginPagePathes(),
-      // 自定义插件，用于生成自定义icon，并添加到虚拟模块
-      pluginIcons(),
       // 移除非必要的vue-router动态路由警告：No match found for location with path
       removeNoMatch(),
+      svgLoader(),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        symbolId: 'icon-custom-[dir]-[name]',
+        inject: 'body-last',
+        customDomId: '__CUSTOM_SVG_ICON__',
+      }),
     ],
     resolve: {
       alias: {

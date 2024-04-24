@@ -8,6 +8,7 @@ import { Dnd } from "@antv/x6-plugin-dnd";
 import { Transform } from '@antv/x6-plugin-transform'
 import GraphPanelToolbox from "../components/graph-panel-toolbox.vue";
 import emitter from "@/utils/eventBus";
+import { debounce } from '@/utils' 
 import { useGraphStore } from '@/store'
 
 const graphStore = useGraphStore()
@@ -19,31 +20,38 @@ let _graph = null;
 let _dnd = null;
 
 onMounted(() => {
-  emitter.on("on-drag-start", (data) => {
-    onDragStart(data);
-  });
-
-  const elGraphPanel = refGraphPanel.value.getBoundingClientRect();
-  _graphContainerWidth = elGraphPanel._graphContainerWidth;
-  _graphContainerHeight = elGraphPanel._graphContainerHeight;
   initGraph();
   initTransform();
   initDnd();
   initMetadata()
-});
 
-onUnmounted(() => {
-  emitter.off("on-drag-start", (data) => {
+  emitter.on("on-drag-start", (data) => {
     onDragStart(data);
   });
 
+  window.addEventListener("resize", resizeGraph, false);
+});
+
+onUnmounted(() => {
   if (_graph) {
     _graph.dispose()
     _graph = null
   }
+
+  emitter.off("on-drag-start", (data) => {
+    onDragStart(data);
+  });
+
+  window.removeEventListener("resize", resizeGraph, false)
 });
 
+/** 初始化画布 */
 function initGraph() {
+  const elGraphPanel = refGraphPanel.value.getBoundingClientRect();
+  _graphContainerWidth = elGraphPanel.width;
+  _graphContainerHeight = elGraphPanel.height;
+  console.log('aaaa', _graphContainerHeight)
+
   _graph = new Graph({
     container: document.getElementById("graphContainer"),
     width: _graphContainerWidth,
@@ -57,7 +65,7 @@ function initGraph() {
         thickness: 1,
       },
     },
-    autoResize: true,
+    autoResize: false,
     background: {
       color: "#0f4d55", // 设置画布背景颜色
       size: "100% 100%",
@@ -74,12 +82,14 @@ function initGraph() {
   });
 }
 
+/** 初始化拖拽插件 */
 function initDnd() {
   _dnd = new Dnd({
     target: _graph,
   });
 }
 
+/** 初始化图形转换插件 */
 function initTransform() {
   _graph.use(new Transform({
     resizing: {
@@ -106,11 +116,24 @@ function initTransform() {
   }))
 }
 
+/** 初始元数据 */
 function initMetadata() {
   if (graphStore.cellsMetadata && graphStore.cellsMetadata.length > 0) {
     _graph.fromJSON(graphStore.cellsMetadata)
   }
 }
+
+/** 重新调整画布大小 */
+const resizeGraph = debounce(() => {
+  const elGraphPanel = refGraphPanel.value.getBoundingClientRect();
+  _graphContainerWidth = elGraphPanel.width;
+  _graphContainerHeight = elGraphPanel.height;
+  console.log('bbbb', _graphContainerWidth)
+
+  // _graph && _graph.resize(_graphContainerWidth, _graphContainerHeight);
+  _graph.resize(_graphContainerWidth, _graphContainerHeight);
+}, 300, false)
+
 
 /** 画布放大 */
 function handleZoomIn() {
@@ -168,7 +191,7 @@ function onDragStart({ mouseEvent, nodeData }) {
 </script>
 
 <template>
-  <div ref="refGraphPanel" class="w-full h-full relative graph-panel">
+  <div ref="refGraphPanel" class="relative graph-panel">
     <div id="graphContainer" />
     <GraphPanelToolbox
       class="absolute bottom-20px right-20px z-index-9"
