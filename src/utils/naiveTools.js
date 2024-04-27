@@ -5,9 +5,8 @@ export function setupMessage(NMessage) {
   class Message {
     static instance
     constructor() {
-      // 单利模式
-      if (Message.instance)
-        return Message.instance
+      // 单例模式
+      if (Message.instance) return Message.instance
       Message.instance = this
       this.message = {}
       this.removeTimer = {}
@@ -27,18 +26,19 @@ export function setupMessage(NMessage) {
     }
 
     showMessage(type, content, option = {}) {
-      if (Array.isArray(content))
-        return content.forEach(msg => NMessage[type](msg, option))
+      if (Array.isArray(content)) {
+        return content.forEach((msg) => NMessage[type](msg, option))
+      }
 
-      if (!option.key)
+      if (!option.key) {
         return NMessage[type](content, option)
+      }
 
       const currentMessage = this.message[option.key]
       if (currentMessage) {
         currentMessage.type = type
         currentMessage.content = content
-      }
-      else {
+      } else {
         this.message[option.key] = NMessage[type](content, {
           ...option,
           duration: 0,
@@ -47,7 +47,6 @@ export function setupMessage(NMessage) {
           },
         })
       }
-
       this.removeMessage(option.key, option.duration)
     }
 
@@ -75,6 +74,7 @@ export function setupMessage(NMessage) {
   return new Message()
 }
 
+
 export function setupDialog(NDialog) {
   NDialog.confirm = function (option = {}) {
     const showIcon = !isNullOrUndef(option.title)
@@ -93,8 +93,12 @@ export function setupDialog(NDialog) {
 }
 
 export function setupNaiveDiscreteApi() {
+  const configProviderProps = computed(() => ({
+    theme: NaiveUI.lightTheme,
+  }))
   const { message, dialog, notification, loadingBar } = NaiveUI.createDiscreteApi(
     ['message', 'dialog', 'notification', 'loadingBar'],
+    { configProviderProps }
   )
 
   window.$loadingBar = loadingBar

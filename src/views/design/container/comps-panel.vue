@@ -70,6 +70,7 @@ function onMouseDown(e, nodeData) {
 <style lang="scss" scoped>
 .comps-panel {
   background-color: #fff;
+  border-right: 1px solid #000;
 }
 .comp-box {
   width: 33.3%;

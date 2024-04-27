@@ -1,5 +1,5 @@
 <template>
-  <div class="px-10px py-10px">
+  <div class="config-panel">
     <n-collapse arrow-placement="right">
       <n-collapse-item title="组件属性" name="prop">
         <div>组件属性</div>
@@ -13,3 +13,10 @@
     </n-collapse>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.config-panel {
+  padding: 10px;
+  border-left: 1px solid #000;
+}
+</style>
